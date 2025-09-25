@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript Audio</title>
+    <link rel="stylesheet" href="./assets/CSS/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <style>
+        :root {
+            --brefly-gradient: linear-gradient(135deg,#2A1B6F 0%,#3050FF 50%,#6A35FF 100%);
+            --color-button : linear-gradient(90deg, #3D8CFF, #6A35FF 50%);
+        }
+        .gradient-bg {
+            background: var(--brefly-gradient);
+        }
+        .color-button {
+            background: var(--color-button);
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    </style>
+    
+    <style type="text/tailwindcss">  
+       @theme {        
+            --color-primary: #3D8CFF; 
+            --color-secondary: #6A35FF;
+            --color-background1: #FFFFFF;
+            --color-background2: #0A0A0A;
+            --color-cadre: #1E1E1E;
+            --font-Inter: 'Inter', sans-serif;
+              }   
+    </style>
+</head>
+<body class="bg-black w-screen h-screen flex-col flex items-center justify-evenly gap-[3rem] pt-[40px] pb-[40px]" style="padding-top: 40px;padding-bottom: 60px;">
+    
+    <aside class="flex flex-col items-center justify-around gap-[7rem]"   >
+        <section>
+            <div class="absolute top-[50px] left-5">
+              <a href="./Home-page.html">
+                <img class="w-[48px] h-[48px] md:w-[50px] md:h-[50px] cursor-pointer" src="./assets/image/return-button.png" alt="button">
+              </a>
+            </div>
+        </section>
+
+        <section >
+            <div class="w-[23rem] h-[40rem] bg-cadre flex flex-col items-center justify-center gap-[30px] md:flex md:flex-col md:items-center md:justify-center md:gap-[40px] md:w-[50rem] md:h-[50rem] rounded-[30px]">
+              
+
+                <div class="w-[16rem] h-[13rem] bg-white rounded-[20px] flex flex-col items-center justify-center md:w-[40rem] md:h-[15rem] md:border-[2rem] md:text-[30px] md:top-[50%]" style="border: #000 solid 5px;">
+                    <label for="pdf-upload" class="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                        <input id="pdf-upload" type="file" accept="application/pdf" class="hidden" />
+                        <div class="flex flex-col items-center justify-center w-full h-full">
+                            <img src="./assets/image/logo-audio.png" alt="upload-pdf" class="w-[50px] h-[70px] opacity-[50%] md:w-[100px] md:h-[100px] mb-4 pointer-events-none">
+                            <span class="text-black text-center font-Inter text-[20px] font-bold opacity-[50%] md:text-[30px] pointer-events-none">
+                               Click here to <br> Add audio file
+                            </span>
+                        </div>
+                    </label>
+                </div>
+
+                 <button type="submit" class="w-[18rem] h-[4rem] rounded-full color-button text-white text-[40px] text-center font-bold font-Inter">
+                    <span class="text-[30px]"> Transcript</span>
+                    <img src="./assets/image/uplord-audio.png" alt="uplord-audio" class="w-[45px] h-[42px] inline-block mr-2">
+                   
+                </button>
+
+                <div class="w-[16rem] h-[15rem] bg-white rounded-[20px] flex flex-col items-center justify-center md:w-[40rem] md:h-[18rem] md:border-[2rem] md:text-[30px] md:top-[50%]" style="border: #000 solid 5px;">
+                    <textarea 
+                        class="w-full h-full bg-white rounded-[20px] text-black font-Inter text-[20px] font-bold opacity-[80%] md:text-[30px] resize-none p-4 outline-none border-none text-center"
+                        placeholder="Transcription output..."
+                        style="border: none; box-shadow: none; text-align: center;"
+                        rows="8"
+                    ></textarea>
+                </div>
+
+            </div>
+        </section>
+
+
+        
+    </aside>  
+    
+    <div>
+        <input type="text" placeholder="Select your language" class="bg-white w-[356px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none" />
+    </div>
+
+</body>
+</html>

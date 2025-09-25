@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brefly AI</title>
+
+        <link rel="stylesheet" href="./assets/CSS/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        :root {
+            --brefly-gradient: linear-gradient(135deg,#2A1B6F 0%,#3050FF 50%,#6A35FF 100%);
+            --color-button : linear-gradient(90deg, #3D8CFF, #6A35FF 50%);
+        }
+        .gradient-bg {
+            background: var(--brefly-gradient);
+        }
+        .color-button {
+            background: var(--color-button);
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    </style>
+    
+    <style type="text/tailwindcss">  
+       @theme {        
+            --color-primary: #3D8CFF; 
+            --color-secondary: #6A35FF;
+            --color-background1: #FFFFFF;
+            --color-background2: #0A0A0A;
+            --color-cadre: #1E1E1E;
+            --font-Inter: 'Inter', sans-serif;
+              }   
+    </style>
+
+
+</head>
+<body class="color-change-3x w-screen h-screen flex-col flex items-center justify-evenly gap-[50px] pt-[40px] pb-[40px]" style="padding-top: 40px;padding-bottom: 40px;">
+
+    <section>
+            <div class="flex flex-col gap-10 items-center justify-center">
+                <div class="flex items-center justify-center w-[200px] h-[200px] rounded-full bg-black opacity-[62%] shadow-lg md:w-[200px] md:h-[200px] md:hover:w-[250px] md:hover:h-[250px] transition-all duration-500">
+                    <img class="w-[150px] h-[150px] md:hover:w-[200px] md:hover:h-[200px] transition-all duration-500" src="./assets/image/logo.png" alt="logo">
+                    
+                </div>
+                <div class="text-white text-center w-[400px] h-[200px] font-Inter text-bold text-[40px] md:text-[50px] md:w-[700px]">Get your text Summarized or translated instantly</div>
+            </div>
+    </section>
+
+    <section class="flex flex-col gap-[50px] items-center justify-center">
+        <div class="flex items-center justify-center gap-[19px]">
+            <div class="w-[110px] h-[110px] rounded-[10px] bg-black opacity-[70%] shadow-lg flex flex-col items-center justify-center gap-[10px]">
+                <img class="w-[41.6px] h-[48px]" src="./assets/image/logo_b-pdf.png" alt="pdf">
+                <span class="text-[20px] text-white text-center text-extrabold">PDF</span>
+            </div>
+            <div class="w-[110px] h-[110px] rounded-[10px] bg-black opacity-[70%] shadow-lg flex flex-col items-center justify-center gap-[10px]">
+                <img class="w-[30.94px] h-[42px]" src="./assets/image/logo_b-audio.png" alt="audio">
+                <span class="text-[20px] text-white text-center text-extrabold">Audio</span>
+            </div>
+            <div class="w-[110px] h-[110px] rounded-[10px] bg-black opacity-[70%] shadow-lg flex flex-col items-center justify-center gap-[10px]">
+                <img class="w-[40px] h-[40px]" src="./assets/image/logo_b-terre.png" alt="terre">
+                <span class="text-[20px] text-white text-center text-extrabold">Translate</span>
+            </div>
+        </div>
+       <a href="./Home-page.html">  
+        <div class="w-[169px] h-[50px] rounded-[12px] bg-white shadow-lg flex items-center justify-center">
+
+            <span class="font-Inter text-extrabold text-black text-center text-extrabold text-[24px] w-full font-bold cursor-pointer">Start Now !</span>
+        </div>
+       </a> 
+    </section>
+
+    <section>
+        <div class="relative w-[400px] h-[80px] flex items-center justify-center">
+            <div class="absolute inset-0 bg-white opacity-[11%] rounded-[99px] shadow-lg"></div>
+            <div class="absolute left-6 top-1/2 -translate-y-1/2 w-[132px] h-[50px] rounded-[20px] bg-white shadow-lg flex items-center justify-center">
+                <span class="font-Inter text-extrabold text-black text-[24px] text-center font-bold cursor-pointer">Log-in</span>
+            </div>
+            <div class="absolute right-6 top-1/2 -translate-y-1/2 w-[132px] h-[50px] rounded-[20px] bg-black shadow-lg flex items-center justify-center" onclick="window.location.href='Home'">
+                <span class="font-Inter text-extrabold text-white text-[24px] text-center font-bold cursor-pointer">Sign-up</span>
+                
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+
+    <style>
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 40px 20px;
+      color: #fff;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+    }
+
+    .card .img-effect {
+      width: 100%;
+      border-radius: 16px;
+      opacity: 0;
+      transform: translateX(-100px); 
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      height: 200px;
+    }
+
+    .card .title {
+      margin-top: 15px;
+      font-size: 32px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateX(100px); 
+      transition: transform 0.8s ease, opacity 0.8s ease;
+    }
+
+
+
+    
+    .card.show .img-effect {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .card.show .title {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+  }
+
+  .card .img-effect {
+    width: 200px;
+    height: 200px;
+  }
+  
+
+  
+  .card .title {
+    font-size: 24px;
+  }
+} 
+@media (min-width: 650px) {
+  .card .img-effect {
+    width: 40rem;
+    height: 300px;
+    max-width: 100%;
+  }
+  .card .title {
+    font-size: 48px;
+    width: 900px;
+  }
+  .card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+} 
+
+
+
+  </style>
+  <div class="container">
+    <div class="card">
+      <img src="./assets/image/img-translate.png" class="img-effect " alt="">
+      <div class="title">L’IA qui Traduit les <br> PDF</div>
+    </div>
+
+    <div class="card">
+      <img src="./assets/image/img-summerise.png" class="img-effect" alt="">
+      <div class="title">L’IA qui Résume les <br> PDF</div>
+    </div>
+
+    <div class="card">
+      <img src="./assets/image/img-transcription.png" class="img-effect" alt="">
+      <div class="title">L’IA qui Transcrit les <br> Audio</div>
+    </div>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        } else {
+          entry.target.classList.remove("show"); 
+        }
+      });
+    }, { threshold: 0.4 }); 
+
+    document.querySelectorAll(".card").forEach(card => {
+      observer.observe(card);
+    });
+  </script>
+
+    </section>
+
+
+</body>
+</html>

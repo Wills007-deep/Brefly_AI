@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Translate Text</title>
+        <link rel="stylesheet" href="./assets/CSS/style.css">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <style>
+            :root {
+                --brefly-gradient: linear-gradient(135deg,#2A1B6F 0%,#3050FF 50%,#6A35FF 100%);
+                --color-button : linear-gradient(90deg, #3D8CFF, #6A35FF 50%);
+            }
+            .gradient-bg {
+                background: var(--brefly-gradient);
+            }
+            .color-button {
+                background: var(--color-button);
+            }
+            @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        </style>
+        
+        <style type="text/tailwindcss">  
+        @theme {        
+                --color-primary: #3D8CFF; 
+                --color-secondary: #6A35FF;
+                --color-background1: #FFFFFF;
+                --color-background2: #0A0A0A;
+                --color-cadre: #1E1E1E;
+                --font-Inter: 'Inter', sans-serif;
+                }   
+        </style>
+
+        <style>
+            /* Centrage horizontal et vertical du placeholder dans le textarea (solution JS pour le vertical) */
+            textarea::placeholder {
+            text-align: center;
+            line-height: 20rem;
+            }
+        </style>
+        <script>
+            // Centrage vertical du placeholder dans le textarea (solution JS)
+            document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.querySelector('textarea');
+            if (textarea) {
+                textarea.style.display = 'flex';
+                textarea.style.alignItems = 'center';
+                textarea.style.justifyContent = 'center';
+                textarea.style.textAlign = 'center';
+                textarea.style.paddingTop = 'calc(50% - 1.5em)'; // Ajuste la valeur selon la taille du texte
+            }
+            });
+        </script>
+    </head>
+    <body class="bg-black w-screen h-screen flex-col flex items-center justify-evenly gap-[3rem] pt-[40px] pb-[40px]" style="padding-top: 40px;padding-bottom: 60px;">
+        
+        <aside class="flex flex-col items-center justify-around gap-[7rem]"   >
+            <section>
+                <div class="absolute top-[50px] left-5">
+                  <a href="Home-page.html">
+                    <img class="w-[48px] h-[48px] md:w-[50px] md:h-[50px] cursor-pointer" src="./assets/image/return-button.png" alt="button">
+                  </a>
+                </div>
+            </section>
+
+            <section >
+                <div class="w-[23rem] h-[30rem] bg-cadre flex flex-col items-center justify-center gap-[40px] md:flex md:flex-col-reverse md:items-center md:justify-center md:gap-[40px] md:w-[50rem] md:h-[35rem] rounded-[30px]">
+                    <div class="w-[20rem] h-[5rem] bg-[#0e0e0e] flex items-center justify-center gap-[20px] rounded-[15px] md:w-[35rem] md:h-[6rem] md:gap-[5rem] ">
+                        <a href="./Translate-PDF.html"></a>
+                            <div class="w-[9rem] h-[3.5rem] bg-primary font-bold text-white text-[35px] rounded-full text-center ">PDF</div>
+                        </a>
+                        <a href="./Translate-text.html">   
+                            <div  class="w-[9rem] h-[3.5rem] bg-secondary font-bold text-white text-[35px] rounded-full text-center">Texte</div>
+                        </a>  
+                    </div>
+
+                    <div class="w-[18rem] h-[20rem] bg-white rounded-[20px] flex items-center justify-center md:w-[40rem] md:h-[20rem] md:border-[2rem] md:text-[30px] md:top-[50%]" style="border: #000 solid 5px;">
+                        <textarea 
+                            class="w-full h-full bg-white rounded-[20px] text-black font-Inter text-[20px] font-bold opacity-[80%] md:text-[30px] resize-none p-4 outline-none border-none text-center flex items-center justify-center"
+                            placeholder="Paste the text here to translate"
+                            style="border: none; box-shadow: none; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 100%; height: 100%;"
+                            rows="8"
+                        ></textarea>
+                    </div>
+
+                </div>
+            </section>
+        </aside>  
+
+        <div>
+            <input type="text" placeholder="Select your language" class="bg-white w-[356px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none" />
+        </div>
+
+        <button type="submit" class="w-[18rem] h-[5rem] rounded-full color-button text-white text-[40px] text-center font-bold font-Inter">Translate</button>
+    </body>
+</html>

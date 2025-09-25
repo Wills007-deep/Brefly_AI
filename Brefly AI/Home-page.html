@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+            <link rel="stylesheet" href="./assets/CSS/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        :root {
+            --brefly-gradient: linear-gradient(135deg,#2A1B6F 0%,#3050FF 50%,#6A35FF 100%);
+            --color-button : linear-gradient(90deg, #3D8CFF, #6A35FF 50%);
+        }
+        .gradient-bg {
+            background: var(--brefly-gradient);
+        }
+        .color-button {
+            background: var(--color-button);
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    </style>
+    
+    <style type="text/tailwindcss">  
+       @theme {        
+            --color-primary: #3D8CFF; 
+            --color-secondary: #6A35FF;
+            --color-background1: #FFFFFF;
+            --color-background2: #0A0A0A;
+            --color-cadre: #1E1E1E;
+            --font-Inter: 'Inter', sans-serif;
+              }   
+    </style>
+</head>
+
+<body class="color-change-3x w-screen h-screen flex-col flex items-center justify-evenly gap-[5rem] md:gap-[10rem] pt-[40px] pb-[40px]" style="padding-top: 40px;padding-bottom: 40px;">
+      <aside class="flex flex-col align-items justify-center gap-[7rem]">
+        <section>
+            <div class="absolute top-[65px] right-5">
+              <img class="w-[48px] h-[48px] cursor-pointer" src="./assets/image/logo-user.png" alt="account">
+            </div>
+        </section>
+
+        <section>
+            <div class="w-screen flex items-center justify-center">
+              <span class=" w-[343px] h-[182.95px] font-bold text-white text-[40px] text-extrabold font-Inter text-center md:w-[600px] md:h-[250px] md:text-[70px]">
+                  HI User Name ,<br>
+                  how can i help <br> you today
+              </span>
+            </div>
+        </section>
+      </aside>  
+
+      <section class="flex flex-col gap-[20px] items-center justify-center">
+        <a href="./Resume-PDF.html">
+          <div class="w-[386.73px] h-[83px] bg-white cursor-pointer rounded-full flex items-center justify-center gap-[5px]">
+            <img class="w-[34.91px] h-[39px]" src="./assets/image/logo-pdf.png" alt="pdf">
+            <span class="text-black font-bold text-[24px] text-extrabold text-center">Summerise PDF</span>
+          </div>
+        </a>
+        <a href="./Transcript-audio.html">
+          <div class="w-[386.73px] h-[83px] bg-white cursor-pointer rounded-full flex items-center justify-center gap-[5px]" >
+            <img class="w-[26.86px] h-[39px]" src="./assets/image/logo-audio.png" alt="" >
+            <span class="text-black font-bold text-[24px] text-extrabold text-center">Transcript PDF</span>
+          </div>
+        </a>
+        <a href="./translate-PDF.html">
+          <div class="w-[386.73px] h-[83px] bg-white cursor-pointer rounded-full flex items-center justify-center gap-[5px]" >
+            <img class="w-[40.28px] h-[39px]" src="./assets/image/logo-terre.png" alt="">
+            <span class="text-black font-bold text-[24px] text-extrabold text-center">Translate PDF</span>
+          </div>
+        </a>
+      </section>
+
+      <section>
+          <span class="text-white font-bold text-[45px] text-center ">Brefly AI</span>
+      </section>
+</body>
+</html>

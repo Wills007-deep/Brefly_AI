@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--FontSizeDefault);
+}
+
+body{
+    width: 100vw;
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}     
+      
+      
+
+        .color-change-3x {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(
+            145deg, 
+            #2A1B6F 0%,   /* Violet très foncé */
+            #6A35FF 35%,  /* Violet vif accentué */
+            #3050FF 70%,  /* Bleu éclatant */
+            #6A35FF 100%  /* Violet pour la fin */
+        );
+        
+        background-size: 500% 500%;
+        animation: gradientMove 5s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+        }
+
+
