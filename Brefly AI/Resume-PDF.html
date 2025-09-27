@@ -6,6 +6,7 @@
     <title>Resume PDF</title>
     <link rel="stylesheet" href="./assets/CSS/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
      <style>
         :root {
             --brefly-gradient: linear-gradient(135deg,#2A1B6F 0%,#3050FF 50%,#6A35FF 100%);
@@ -16,6 +17,24 @@
         }
         .color-button {
             background: var(--color-button);
+        }
+        .color-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .file-selected {
+            border: 3px solid #3D8CFF !important;
+            background-color: #f0f8ff !important;
+        }
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+        select:focus {
+            opacity: 1;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
     </style>
@@ -44,22 +63,20 @@
 
         <section >
             <div class="w-[20rem] h-[30rem] bg-cadre flex flex-col items-center justify-center gap-[40px] md:flex md:flex-col-reverse md:items-center md:justify-center md:gap-[40px] md:w-[50rem] md:h-[35rem] rounded-[30px]">
-                <div class="w-[18rem] h-[5rem] bg-[#0e0e0e] flex items-center gap-[20px] rounded-[15px] md:w-[35rem] md:h-[6rem] md:gap-[5rem] ">
-                    <a href="./Translate-PDF.html"></a>
-                        <div class="w-[7rem] h-[3rem] bg-primary font-bold text-white text-[30px] rounded-full text-center ">PDF</div>
-                    </a>
-                    <a href="./Translate-text.html">   
-                        <div  class="w-[7rem] h-[3rem] bg-secondary font-bold text-white text-[30px] rounded-full text-center">Texte</div>
+                <div class="w-[18rem] h-[5rem] bg-[#0e0e0e] flex items-center gap-[20px] rounded-[15px] md:w-[35rem] md:h-[6rem] md:gap-[5rem] md:justify-center">
+                    <div class="w-[7rem] h-[3rem] bg-primary font-bold text-white text-[30px] rounded-full text-center leading-[3rem]">PDF</div>
+                    <a href="./Resume-Text.html">   
+                        <div class="w-[7rem] h-[3rem] bg-secondary font-bold text-white text-[30px] rounded-full text-center leading-[3rem] cursor-pointer hover:opacity-80">Text</div>
                     </a>  
                 </div>
 
                 <div class="w-[18rem] h-[20rem] bg-white rounded-[20px] flex flex-col items-center justify-center md:w-[40rem] md:h-[20rem] md:border-[2rem] md:text-[30px] md:top-[50%]" style="border: #000 solid 5px;">
                     <label for="pdf-upload" class="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                        <input id="pdf-upload" type="file" accept="application/pdf" class="hidden" />
+                        <input id="pdf-upload" type="file" accept="application/pdf,.pdf" class="hidden" />
                         <div class="flex flex-col items-center justify-center w-full h-full">
                             <img src="./assets/image/uplord-pdf.png" alt="upload-pdf" class="w-[80px] h-[80px] md:w-[100px] md:h-[100px] mb-4 pointer-events-none">
                             <span class="text-black text-center font-Inter text-[20px] font-bold opacity-[50%] md:text-[30px] pointer-events-none">
-                               Click here to <br> Add PDF file
+                               Click here to <br> Add PDF file<br><small style="font-size: 14px; opacity: 0.7;">Text will be extracted automatically</small>
                             </span>
                         </div>
                     </label>
@@ -71,11 +88,382 @@
         </section>
     </aside>  
     
-    <div>
-        <input type="text" placeholder="Select your language" class="bg-white w-[320px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none" />
+    <form id="resume-form" class="flex flex-col items-center gap-4">
+        <div class="flex flex-col gap-4 md:flex-row md:gap-8">
+            <input id="user-name" type="text" placeholder="Your Name" required class="bg-white w-[320px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none" />
+            <input id="user-email" type="email" placeholder="Your Email (optional)" class="bg-white w-[320px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none" />
+        </div>
+        
+        <div class="flex flex-col gap-4 md:flex-row md:gap-8">
+            <select id="action-select" required class="bg-white w-[320px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none appearance-none cursor-pointer">
+                <option value="" disabled selected>Select Action</option>
+                <option value="translate">Translate</option>
+                <option value="summarize">Summarize</option>
+                <option value="resume">Generate Resume</option>
+                <option value="transcribe">Transcribe</option>
+            </select>
+            
+            <select id="language-select" required class="bg-white w-[320px] h-[60px] rounded-full text-center font-bold text-[20px] text-black opacity-[80%] outline-none border-none appearance-none cursor-pointer">
+                <option value="" disabled selected>Select Language</option>
+                <option value="English">English</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="German">German</option>
+                <option value="Italian">Italian</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Dutch">Dutch</option>
+                <option value="Russian">Russian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Arabic">Arabic</option>
+            </select>
+        </div>
+        
+        <button id="generate-btn" type="submit" class="w-[16rem] h-[4rem] rounded-full color-button text-white text-[35px] text-center font-bold font-Inter">Process</button>
+    </form>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="hidden flex flex-col items-center gap-4">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        <p id="loading-text" class="text-white text-lg">Processing your PDF...</p>
     </div>
 
+    <!-- Results display -->
+    <div id="results" class="hidden w-full max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg">
+        <h2 id="result-title" class="text-2xl font-bold mb-4 text-black">Result</h2>
+        <div id="result-content" class="text-black whitespace-pre-wrap"></div>
+        <button id="copy-btn" class="mt-4 px-6 py-2 bg-primary text-white rounded-full hover:bg-secondary transition-colors">Copy to Clipboard</button>
+        <button id="download-btn" class="mt-4 ml-4 px-6 py-2 bg-secondary text-white rounded-full hover:bg-primary transition-colors">Download as Text</button>
+    </div>
 
-    <button type="submit" class="w-[16rem] h-[4rem] rounded-full color-button text-white text-[35px] text-center font-bold font-Inter">Translate</button>
+    <!-- Error display -->
+    <div id="error" class="hidden w-full max-w-4xl mx-auto mt-8 p-6 bg-red-100 border border-red-400 rounded-lg">
+        <h2 class="text-xl font-bold mb-2 text-red-800">Error</h2>
+        <p id="error-message" class="text-red-700"></p>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        // Handle file selection
+        document.getElementById('pdf-upload').addEventListener('change', function(e) {
+            selectedFile = e.target.files[0];
+            const uploadContainer = document.querySelector('label[for="pdf-upload"] > div');
+            const uploadArea = document.querySelector('label[for="pdf-upload"] span');
+            
+            if (selectedFile) {
+                // Validate file type
+                if (selectedFile.type !== 'application/pdf' && !selectedFile.name.toLowerCase().endsWith('.pdf')) {
+                    showError('❌ Please select a valid PDF file.');
+                    selectedFile = null;
+                    e.target.value = '';
+                    uploadArea.innerHTML = `Click here to <br> Add PDF file<br><small style="font-size: 14px; opacity: 0.7;">Text will be extracted automatically</small>`;
+                    uploadArea.style.opacity = '0.5';
+                    uploadContainer.parentElement.classList.remove('file-selected');
+                    return;
+                }
+                
+                uploadArea.innerHTML = `Selected: ${selectedFile.name}<br><span style="font-size: 16px;">Click to change file</span><br><small style="font-size: 12px; opacity: 0.7;">Ready for text extraction</small>`;
+                uploadArea.style.opacity = '1';
+                uploadContainer.parentElement.classList.add('file-selected');
+            } else {
+                uploadArea.innerHTML = `Click here to <br> Add PDF file<br><small style="font-size: 14px; opacity: 0.7;">Text will be extracted automatically</small>`;
+                uploadArea.style.opacity = '0.5';
+                uploadContainer.parentElement.classList.remove('file-selected');
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('resume-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const userName = document.getElementById('user-name').value.trim();
+            const userEmail = document.getElementById('user-email').value.trim();
+            const action = document.getElementById('action-select').value;
+            const language = document.getElementById('language-select').value;
+            
+            // Validate required fields
+            if (!userName) {
+                showError('Please enter your name.');
+                return;
+            }
+            
+            if (!action) {
+                showError('Please select an action.');
+                return;
+            }
+            
+            if (!language) {
+                showError('Please select a language.');
+                return;
+            }
+            
+            if (!selectedFile) {
+                showError('Please select a PDF file.');
+                return;
+            }
+
+            // Show loading state
+            showLoading();
+            
+            try {
+                // Extract text from PDF
+                const extractedText = await extractTextFromPDF(selectedFile);
+                
+                if (!extractedText || extractedText.trim().length === 0) {
+                    showError('❌ Could not extract text from the PDF. Please ensure the PDF contains readable text.');
+                    return;
+                }
+
+                // Prepare the data for webhook according to expected input format
+                const webhookData = {
+                    textInput: extractedText,
+                    contentSource: 'pdf',
+                    action: action,
+                    language: language,
+                    userName: userName,
+                    userEmail: userEmail,
+                    fileName: selectedFile.name,
+                    timestamp: new Date().toISOString()
+                };
+
+                console.log('Sending data to webhook:', webhookData);
+
+                // Send to webhook
+                const response = await fetch('http://localhost:5678/webhook/brefly-ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(webhookData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show success result
+                    showResults(result.data.processedContent);
+                    
+                    // Show success message
+                    showMessage('✅ Content processed successfully!', 'success');
+                } else {
+                    // Show error
+                    showError(`❌ Error: ${result.message || result.error}`);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.message.includes('PDF')) {
+                    showError('❌ Error processing PDF file. Please ensure the file is a valid PDF with readable text.');
+                } else {
+                    showError('❌ Failed to process content. Please check your connection and try again.');
+                }
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Function to extract text from PDF using PDF.js
+        async function extractTextFromPDF(file) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    
+                    // Configure PDF.js worker
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                    
+                    // Load the PDF
+                    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                    let fullText = '';
+                    
+                    // Extract text from each page
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const textContent = await page.getTextContent();
+                        
+                        // Combine text items from the page
+                        const pageText = textContent.items
+                            .map(item => item.str)
+                            .join(' ')
+                            .replace(/\s+/g, ' ')
+                            .trim();
+                        
+                        if (pageText) {
+                            fullText += pageText + '\n\n';
+                        }
+                    }
+                    
+                    resolve(fullText.trim());
+                } catch (error) {
+                    console.error('PDF text extraction error:', error);
+                    reject(new Error('Failed to extract text from PDF: ' + error.message));
+                }
+            });
+        }
+
+        // Show loading state
+        function showLoading() {
+            const action = document.getElementById('action-select').value;
+            const loadingText = document.getElementById('loading-text');
+            
+            // Update loading message based on action
+            switch(action) {
+                case 'translate':
+                    loadingText.textContent = 'Extracting text from PDF and translating...';
+                    break;
+                case 'summarize':
+                    loadingText.textContent = 'Extracting text from PDF and summarizing...';
+                    break;
+                case 'resume':
+                    loadingText.textContent = 'Extracting text from PDF and generating resume...';
+                    break;
+                case 'transcribe':
+                    loadingText.textContent = 'Extracting text from PDF...';
+                    break;
+                default:
+                    loadingText.textContent = 'Extracting text from PDF and processing...';
+            }
+            
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('generate-btn').disabled = true;
+            document.getElementById('generate-btn').textContent = 'Processing...';
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('generate-btn').disabled = false;
+            document.getElementById('generate-btn').textContent = 'Process';
+        }
+
+        // Show results
+        function showResults(content) {
+            const action = document.getElementById('action-select').value;
+            const resultTitle = document.getElementById('result-title');
+            
+            // Update result title based on action
+            switch(action) {
+                case 'translate':
+                    resultTitle.textContent = 'Translation Result';
+                    break;
+                case 'summarize':
+                    resultTitle.textContent = 'Summary';
+                    break;
+                case 'resume':
+                    resultTitle.textContent = 'Generated Resume';
+                    break;
+                case 'transcribe':
+                    resultTitle.textContent = 'Transcription';
+                    break;
+                default:
+                    resultTitle.textContent = 'Result';
+            }
+            
+            document.getElementById('result-content').textContent = content;
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('error').classList.add('hidden');
+        }
+
+        // Show error
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+        }
+
+        // Copy to clipboard functionality
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const content = document.getElementById('result-content').textContent;
+            navigator.clipboard.writeText(content).then(function() {
+                const btn = document.getElementById('copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+            });
+        });
+
+        // Download as text file functionality
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const content = document.getElementById('result-content').textContent;
+            const userName = document.getElementById('user-name').value.trim();
+            const action = document.getElementById('action-select').value;
+            
+            // Generate appropriate filename based on action
+            let filename;
+            switch(action) {
+                case 'translate':
+                    filename = `${userName}_Translation.txt`;
+                    break;
+                case 'summarize':
+                    filename = `${userName}_Summary.txt`;
+                    break;
+                case 'resume':
+                    filename = `${userName}_Resume.txt`;
+                    break;
+                case 'transcribe':
+                    filename = `${userName}_Transcription.txt`;
+                    break;
+                default:
+                    filename = `${userName}_Result.txt`;
+            }
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+
+        // Utility function to show messages (following brefly_frontend.html pattern)
+        function showMessage(message, type) {
+            // Remove any existing messages
+            document.querySelectorAll('.error-message, .success-message').forEach(el => el.remove());
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
+                background: ${type === 'error' ? '#ffebee' : '#e8f5e8'};
+                color: ${type === 'error' ? '#c62828' : '#2e7d32'};
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 15px;
+                border-left: 4px solid ${type === 'error' ? '#c62828' : '#2e7d32'};
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                max-width: 400px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            `;
+            
+            // Insert message into body
+            document.body.appendChild(messageDiv);
+            
+            // Auto-remove message after 5 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize the application (following brefly_frontend.html pattern)
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🤖 Resume PDF processor initialized');
+        });
+    </script>
 </body>
 </html>
