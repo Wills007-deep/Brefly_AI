@@ -1,0 +1,270 @@
+{
+  "name": "Briefly",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "brefly-ai",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        2544,
+        3104
+      ],
+      "id": "294ad9d3-0233-4bf0-9101-fb832cf4b540",
+      "name": "Webhook Trigger2",
+      "webhookId": "brefly-ai-webhook"
+    },
+    {
+      "parameters": {
+        "content": "## 📋 Workflow Documentation\n\n**Purpose:** Process text content via webhook from HTML form\n\n**Expected Input:**\n- `textInput`: Text content (from direct input, PDF extraction, or audio transcription)\n- `contentSource`: Source type ('text', 'pdf', 'audio')\n- `action`: Action to perform (resume, translate, etc.)\n- `language`: Target language\n- `userName`: User's name\n- `userEmail`: User's email (optional)\n- `fileName`: Original file name (if from file)\n\n**Process Flow:**\n1. Receive webhook data with extracted text\n2. Validate required fields\n3. Process with AI\n4. Return formatted response\n\n**Note:** PDF/Audio processing happens on frontend",
+        "height": 464,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        2640
+      ],
+      "id": "e920b47d-46a4-463b-869a-c4993c104dcf",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.action }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            },
+            {
+              "leftValue": "={{ $json.body.language }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            },
+            {
+              "leftValue": "={{ $json.body.userName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            },
+            {
+              "leftValue": "={{ $json.body.textInput }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combineOperation": "all"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2896,
+        3088
+      ],
+      "id": "91feb83e-c792-4df4-bc92-040a51a2a2ac",
+      "name": "Validate Required Fields2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"error\": \"Missing required fields\",\n  \"message\": \"Please provide: textInput, action, language, and userName\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        3328,
+        2832
+      ],
+      "id": "b4e0fa2e-24af-4632-9f72-460756c3d90b",
+      "name": "Error Response2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean the input data\nconst body = $input.first().json.body;\n\n// Get the content and metadata\nconst textContent = body.textInput?.trim() || '';\nconst contentSource = body.contentSource || 'text';\nconst fileName = body.fileName || '';\nconst wordCount = textContent.split(/\\s+/).filter(word => word.length > 0).length;\nconst charCount = textContent.length;\n\n// Determine content description based on source\nlet contentDescription = '';\nswitch (contentSource) {\n  case 'pdf':\n    contentDescription = fileName ? `PDF document: ${fileName}` : 'PDF document';\n    break;\n  case 'audio':\n    contentDescription = fileName ? `Audio file: ${fileName}` : 'Audio file';\n    break;\n  default:\n    contentDescription = 'Direct text input';\n}\n\nreturn {\n  json: {\n    textContent,\n    contentSource,\n    contentDescription,\n    fileName,\n    wordCount,\n    charCount,\n    action: body.action,\n    language: body.language,\n    userName: body.userName,\n    userEmail: body.userEmail || '',\n    timestamp: new Date().toISOString(),\n    originalData: body\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3216,
+        3104
+      ],
+      "id": "8121a971-2ea0-4465-b244-415b3b18e818",
+      "name": "Process Input Data2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.textContent }}",
+        "options": {
+          "systemMessage": "=Tu es un assistant intelligent spécialisé dans le traitement de texte et de contenu.\n\nContexte de la demande :\n- Utilisateur : {{ $json.userName }}\n- Source du contenu : {{ $json.contentDescription }}\n- Action demandée : {{ $json.action }}\n- Langue cible : {{ $json.language }}\n- Nombre de mots : {{ $json.wordCount }}\n- Nombre de caractères : {{ $json.charCount }}\n\nInstructions :\n1. Commence par saluer chaleureusement {{ $json.userName }}\n2. Traite le contenu fourni selon l'action demandée : {{ $json.action }}\n3. Utilise la langue cible spécifiée : {{ $json.language }}\n4. Adapte ton traitement selon la source ({{ $json.contentSource }})\n5. Respecte strictement l'action et la langue demandées\n6. Fournis un résultat de qualité professionnelle\n\nActions possibles :\n- resume/résumer : Créer un résumé concis et structuré\n- translate/traduire : Traduire fidèlement vers la langue cible\n- analyze/analyser : Analyser le contenu avec des insights pertinents\n- extract/extraire : Extraire et organiser les points clés\n- rewrite/réécrire : Réécrire en améliorant la clarté et le style\n- transcribe/transcrire : Nettoyer et structurer le texte transcrit\n\nSi le contenu est trop court ou inadéquat, suggère poliment à l'utilisateur de fournir plus de détails."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        3456,
+        3088
+      ],
+      "id": "c1828bee-b232-4ad4-a31e-7e4177fb3f5e",
+      "name": "AI Content Processor2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"data\": {\n    \"processedContent\": {{ JSON.stringify($json.output) }},\n    \"originalContent\": {\n      \"source\": {{ JSON.stringify($('Process Input Data2').first().json.contentSource) }},\n      \"description\": {{ JSON.stringify($('Process Input Data2').first().json.contentDescription) }},\n      \"wordCount\": {{ $('Process Input Data2').first().json.wordCount }},\n      \"charCount\": {{ $('Process Input Data2').first().json.charCount }}\n    },\n    \"processing\": {\n      \"action\": {{ JSON.stringify($('Process Input Data2').first().json.action) }},\n      \"language\": {{ JSON.stringify($('Process Input Data2').first().json.language) }},\n      \"userName\": {{ JSON.stringify($('Process Input Data2').first().json.userName) }}\n    }\n  },\n  \"timestamp\": {{ JSON.stringify(new Date().toISOString()) }},\n  \"message\": \"Content processed successfully\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        3920,
+        3040
+      ],
+      "id": "f2a4de37-8855-4276-8d9e-eb03321fc1a4",
+      "name": "Success Response2"
+    },
+    {
+      "parameters": {
+        "content": "## 🚨 Error Handling\n\n**Validation Errors:**\n- Missing required fields\n- Empty text content\n- Invalid request format\n\n**Required Fields:**\n- textInput (non-empty)\n- action\n- language \n- userName\n\n**Returns:**\n- HTTP 400 for validation errors\n- HTTP 200 for successful processing",
+        "height": 300,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3424,
+        2592
+      ],
+      "id": "822c27f1-6d94-41a6-9f54-96d5c62ef7d6",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "model": "x-ai/grok-4-fast:free",
+        "options": {
+          "maxTokens": 32768,
+          "temperature": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        3424,
+        3344
+      ],
+      "id": "43ed5c49-543b-4604-83db-cb5c28a12d35",
+      "name": "OpenRouter Chat Model2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "mJYBEjoa3bYekCHO",
+          "name": "OpenRouter account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields2": {
+      "main": [
+        [
+          {
+            "node": "Process Input Data2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Input Data2": {
+      "main": [
+        [
+          {
+            "node": "AI Content Processor2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Content Processor2": {
+      "main": [
+        [
+          {
+            "node": "Success Response2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Content Processor2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b46dd140-fc1c-4d60-b470-60fe6a38945d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "93ace94098d9f9dd844138bcf4397e622c6ea8d222af8db31040119d08e72bcf"
+  },
+  "id": "noS2BOVN4oYH3JX6",
+  "tags": []
+}
